@@ -1,7 +1,6 @@
 package com.example.factorialsber.controller;
 
 import com.example.factorialsber.service.FactorialService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

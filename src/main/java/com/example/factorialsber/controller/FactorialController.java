@@ -1,7 +1,6 @@
 package com.example.factorialsber.controller;
 
 import com.example.factorialsber.service.FactorialService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
