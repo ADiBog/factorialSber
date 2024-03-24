@@ -11,13 +11,8 @@ public class FactorialRequestDto {
     @Max(value = 100, message = "Number must be less than or equal to 100")
     private Integer factorialNum;
 
-    public void setFactorialNum(String factorialNumStr) {
-        try {
-            Integer value = Integer.valueOf(factorialNumStr);
-            this.factorialNum = value;
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid number format");
-        }
+    public void setFactorialNum(Integer factorialNum) {
+        this.factorialNum = factorialNum;
     }
 
     public Integer getFactorialNum() {

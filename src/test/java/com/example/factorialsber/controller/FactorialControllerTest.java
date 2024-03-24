@@ -31,13 +31,10 @@ class FactorialControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @BeforeEach
-    void setUp() {
-        when(factorialService.calculateFactorial(anyInt())).thenReturn(BigInteger.valueOf(120));
-    }
-
     @Test
     void calculateFactorialReturnsCorrectResponse() throws Exception {
+        when(factorialService.calculateFactorial(anyInt())).thenReturn(BigInteger.valueOf(120));
+
         mockMvc.perform(post("/factorial")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"factorialNum\": \"5\"}"))

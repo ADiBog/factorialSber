@@ -1,6 +1,7 @@
 package com.example.factorialsber.controller;
 
 import com.example.factorialsber.dto.FactorialRequestDto;
+import com.example.factorialsber.dto.FactorialResponseDto;
 import com.example.factorialsber.service.FactorialService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigInteger;
-import java.util.Map;
 
 @RestController
 public class FactorialController {
@@ -21,8 +21,9 @@ public class FactorialController {
     }
 
     @PostMapping("/factorial")
-    public ResponseEntity<?> calculateFactorial(@Validated @RequestBody FactorialRequestDto requestDto) {
+    public ResponseEntity<FactorialResponseDto> calculateFactorial(@Validated @RequestBody FactorialRequestDto requestDto) {
         BigInteger result = factorialService.calculateFactorial(requestDto.getFactorialNum());
-        return ResponseEntity.ok(Map.of("result", result));
+        FactorialResponseDto responseDto = new FactorialResponseDto(result);
+        return ResponseEntity.ok(responseDto);
     }
 }
