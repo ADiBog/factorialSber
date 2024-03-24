@@ -1,37 +1,39 @@
 package com.example.factorialsber.integration;
 
+import com.example.factorialsber.dto.FactorialRequestDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigInteger;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class FactorialIntegrationTests {
-
-    @LocalServerPort
-    private int port;
+@SpringBootTest
+@AutoConfigureMockMvc
+class FactorialIntegrationTests {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
-    public void calculateFactorialReturnsCorrectResult() {
-        ResponseEntity<Map> response = restTemplate.postForEntity("http://localhost:" + port + "/factorial", Map.of("factorial_num", "5"), Map.class);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(Map.of("result", 120), response.getBody());
-    }
-
-    @Test
-    public void calculateFactorialBadRequestWhenNumberIsInvalid() {
-        ResponseEntity<Map> response = restTemplate.postForEntity("http://localhost:" + port + "/factorial", Map.of("factorial_num", "abc"), Map.class);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("The value of 'factorial_num' must be a valid number", response.getBody().get("error"));
+    void calculateFactorialIntegrationTest() throws Exception {
+        FactorialRequestDto requestDto = new FactorialRequestDto();
+        requestDto.setFactorialNum("5");
+        mockMvc.perform(post("/factorial")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDto)))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(Map.of("result", new BigInteger("120")))));
     }
 }

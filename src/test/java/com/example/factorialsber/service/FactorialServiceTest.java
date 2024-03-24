@@ -1,8 +1,9 @@
 package com.example.factorialsber.service;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
 import java.math.BigInteger;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FactorialServiceTest {
 
@@ -10,11 +11,13 @@ class FactorialServiceTest {
 
     @Test
     void calculateFactorialForZero() {
-        assertEquals(BigInteger.ONE, factorialService.calculateFactorial(0));
+        BigInteger result = factorialService.calculateFactorial(0);
+        Assertions.assertEquals(BigInteger.ONE, result);
     }
 
     @Test
     void calculateFactorialForPositiveNumber() {
-        assertEquals(BigInteger.valueOf(120), factorialService.calculateFactorial(5));
+        BigInteger result = factorialService.calculateFactorial(5);
+        Assertions.assertEquals(BigInteger.valueOf(120), result);
     }
 }
